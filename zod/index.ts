@@ -167,3 +167,24 @@ const junior = {
 }
 
 // console.log("Passou: ", devSchema.safeParse(junior))
+
+// --- 008 ---
+
+const user07Schema = z.object({
+    name: z.string().min(5),
+    email: z.email(),
+    password: z.string().min(6),
+    age: z.string().transform(value => Number(value)),
+    isAdmin: z.boolean().default(false).optional()
+})
+
+type UserType = z.infer<typeof user07Schema>
+
+const userTest: UserType = {
+    name: 'Vitor',
+    email: 'vitor@gmail.com',
+    age: 25,
+    password: "123456"
+}
+
+type UserInputType = z.input<typeof user07Schema>
