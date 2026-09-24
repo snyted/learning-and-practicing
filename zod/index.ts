@@ -110,11 +110,60 @@ const user06Schema = z.object({
     instagram: z.url().refine(url => url.includes('instagram.com'), { error: "A url do instagram precisa conter 'instagram.com'" }).optional()
 })
 
-const user06 = { 
+const user06 = {
     name: 'Meu insta',
     instagram: 'https://www.instagram.com/eu'
 }
 
-const {success, data, error} = user06Schema.safeParse(user06)
+// const {success, data, error} = user06Schema.safeParse(user06)
+// console.log(data)
 
-console.log(data)
+// --- 07 ---
+
+const devSchema = z.object({
+    name: z.string().min(5),
+    email: z.email(),
+    primaryProgrammingLanguage: z.string().min(2),
+    level: z.enum(['junior', 'pleno', 'senior']),
+    experienceInYears: z.number().min(1).max(30),
+    technologies: z.array(z.string().min(1))
+}).refine(dev => {
+    if (dev.level === 'senior') {
+        return dev.experienceInYears >= 5 && dev.technologies.length >= 2
+    }
+
+    return true
+}, { error: 'Não pode ser senior' })
+
+const seniorNaoPassou = {
+    name: 'Vitor',
+    email: 'vitor@gmail.com',
+    primaryProgrammingLanguage: 'TypeScript',
+    level: 'senior',
+    experienceInYears: 3,
+    technologies: ['React', 'Node.js']
+}
+
+// console.log("Não passou: ", devSchema.safeParse(seniorNaoPassou))
+
+const seniorPassou = {
+    name: 'Vitor',
+    email: 'vitor@gmail.com',
+    primaryProgrammingLanguage: 'TypeScript',
+    level: 'senior',
+    experienceInYears: 5,
+    technologies: ['React', 'Node.js']
+}
+
+// console.log("Passou: ", devSchema.safeParse(seniorPassou))
+
+const junior = {
+    name: 'Vitor',
+    email: 'vitor@gmail.com',
+    primaryProgrammingLanguage: 'TypeScript',
+    level: 'junior',
+    experienceInYears: 1,
+    technologies: ['React', 'Node.js']
+}
+
+// console.log("Passou: ", devSchema.safeParse(junior))
