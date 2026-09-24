@@ -1,10 +1,10 @@
 import { z } from "zod"
 
-// 01
+// --- 01 ---
 const usernameSchema = z.string().min(3).max(20)
 
 
-// 02
+// --- 02 ---
 const userSchema = z.object({
     email: z.email("Email inválido"),
     age: z.number().min(18).max(100),
@@ -20,7 +20,7 @@ const user = {
 
 // const { success, error } = userSchema.safeParse(user)
 
-// 03
+// --- 03 ---
 
 const cartSchema = z.object({
     clientId: z.uuid(),
@@ -59,7 +59,7 @@ const cart02 = {
 }
 
 
-// 04
+// --- 04 ---
 
 const user02Schema = z.object({
     name: z.string().min(2),
@@ -100,5 +100,21 @@ const order = {
     flavor: "Margherita",
 }
 
-const { success, data, error } = orderSchema.safeParse(order)
-console.log(success, data, error)
+// const { success, data, error } = orderSchema.safeParse(order)
+// console.log(success, data, error)
+
+// --- 06 --- Refinamento básico 
+
+const user06Schema = z.object({
+    name: z.string().min(2),
+    instagram: z.url().refine(url => url.includes('instagram.com'), { error: "A url do instagram precisa conter 'instagram.com'" }).optional()
+})
+
+const user06 = { 
+    name: 'Meu insta',
+    instagram: 'https://www.instagram.com/eu'
+}
+
+const {success, data, error} = user06Schema.safeParse(user06)
+
+console.log(data)
