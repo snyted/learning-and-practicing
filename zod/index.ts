@@ -188,3 +188,4 @@ const userTest: UserType = {
 }
 
 type UserInputType = z.input<typeof user07Schema>
+type UserOutputType = z.output<typeof user07Schema>
